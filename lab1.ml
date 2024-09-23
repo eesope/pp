@@ -1,5 +1,4 @@
 (** [drop n l] returns l with the first n elements dropped. *)
-
 let rec drop n l =
   if n <= 0 then l
   else
@@ -17,7 +16,6 @@ let test_drop () =
     of corresponding elements of 1st1 and 1st2. 
     If 1st1 and 1st2 are of different lengths, 
     the function stops "zipping" when hte shorter list ends. *)
-
 let rec zip lst1 lst2 =
   match lst1, lst2 with
   | [], [] -> []
@@ -48,7 +46,6 @@ let test_zip_tr () =
 (** [unzip lst] returns a pair of lists where the first list consists of 
     the first element of each pair in lst and the second list consists of 
     the second element of each pair in lst. *)
-
 let rec unzip lst =
   match lst with
   | [] -> ([], [])
@@ -57,7 +54,6 @@ let rec unzip lst =
     (x1 :: lst1, x2 :: lst2)
 
 (** Tail-recursive version of unzip *)
-
 let unzip_tr lst = 
   let rec aux lst acc1 acc2 =
     match lst with
@@ -79,7 +75,6 @@ let test_unzip_tr () =
 
 (** [dedup lst] returns a list where all consecutive duplicated elements in lst 
     are collapsed into a single element. *)
-
 let rec dedup lst = 
   match lst with
   | [] -> []
@@ -91,20 +86,18 @@ let rec dedup lst =
       x1 :: dedup (x2 :: xs)
 
 (** Tail-recursive version of dedup *)
-
 let dedup_tr lst = 
-  let rec aux lst pre acc = 
+  let rec aux lst acc = 
     match lst with 
     | [] -> List.rev acc
     | [x] -> List.rev (x :: acc)
     | x1 :: (x2 :: _ as xs) -> 
       if x1 = x2 then
-        aux xs (Some x1) acc
+        aux xs acc
       else 
-        aux (x2 :: xs) (Some x1) (x1 :: acc)
+        aux (x2 :: xs) (x1 :: acc)
   in
-  aux lst None []
-
+  aux lst []
 
 let test_dedup () = 
   assert (dedup [1; 1; 2; 3; 3; 3; 2; 1; 1] = [1; 2; 3; 2; 1]);
