@@ -26,8 +26,7 @@ let rec zip lst1 lst2 =
 let zip_tr lst1 lst2 = 
   let rec aux lst1 lst2 acc = 
     match lst1, lst2 with
-    | [], [] -> acc
-    | _, [] | [], _ -> []
+    | _, [] | [], _ -> List.rev acc
     | x1 :: xs, x2 :: xs2 -> aux xs xs2 ((x1, x2) :: acc)
   in
   aux lst1 lst2 []
