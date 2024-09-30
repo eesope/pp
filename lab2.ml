@@ -101,14 +101,16 @@ let frequencies lst =
   lst
   |> List.sort compare
   |> group
-  |> List.fold_left (fun acc x ->
+  |> List.map (fun l -> (List.hd l, List.length l))
+
+(*   |> List.fold_left (fun acc x ->
     match x with
     | [] -> acc
     | _ -> 
       let elt = List.hd x in
       let count = List.length x in
       (elt, count) :: acc
-    ) []
+    ) [] *)
 
 let test_frequencies () = 
   assert (frequencies [23; 12; 15; 12; 45; 15; 13; 45; 15; 12; 15; 15] = [(23, 1); (12, 3); (15, 5); (13, 1); (45, 2)]);
