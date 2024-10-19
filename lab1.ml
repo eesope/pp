@@ -94,7 +94,7 @@ let dedup_tr lst =
       if x1 = x2 then
         aux xs acc
       else 
-        aux (x2 :: xs) (x1 :: acc)
+        aux xs (x1 :: acc)
   in
   aux lst []
 
