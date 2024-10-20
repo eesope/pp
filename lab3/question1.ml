@@ -15,6 +15,12 @@ in the same order they occur in the string *)
   let list_of_string str =
   String.fold_right (fun c acc -> c :: acc ) str []
 
+  (* tail-recursive version *)
+let list_of_string_tr str =
+  let aux acc c = c :: acc in
+    List.rev ( String.fold_left aux [] str)
+
+
 (* [is_permutation str1 str2] returns boolean value 
 whether two strings are permutation of each other *)
 let is_permutation str1 str2 =
