@@ -1,3 +1,10 @@
+(* 
+- Read each line from an input file or the standard IO
+- Through terminal type:
+  ocamlbuild sort.native 
+  ./sort.native input.txt
+*)
+
 type record = {id: string; score: int}
 
 (* [is_valid_id id] returns bool value after testing whether a string is a valid ID *)
@@ -16,8 +23,9 @@ let is_valid_score score =
 
 
 (* [parse sting] returns record type after getting a valid record from a string *)
-let parse string =
-  match String.split_on_char ' ' string with
+let parse line =
+  let plst = List.filter (fun x -> x <> "") (String.split_on_char ' ' line) in
+  match plst with
   | id :: score_str :: _ ->
     (try
       let score = int_of_string score_str in
@@ -67,6 +75,5 @@ let () =
       stdin
     in 
     let sorted_records = sort ic [] in
-    List.iter (fun {id; score} -> Printf.printf "%d %s\n" score id) sorted_records;
+    List.iter (fun {id; score} -> Printf.printf "%3d %s \n" score id) sorted_records;
     if Array.length Sys.argv > 1 then close_in ic
-
