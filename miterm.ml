@@ -29,9 +29,8 @@ let odd_sum =
 (* intersperse 0 [1; 2; 3] -> [1; 0; 2; 0; 3] *)
 let rec intersperse x lst =
   match lst with
-  | [] -> []
-  | [y] -> [y]
-  | y :: ys -> y :: x:: intersperse x ys
+  | [] | [_] -> lst
+  | y :: ys -> y :: x :: intersperse x ys
 
 
 (* 3a *)
