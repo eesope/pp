@@ -16,7 +16,7 @@ let sum_odd_even lst =
   List.fold_left (fun (odd, even) x -> if x mod 2 = 0 then (odd, x + even) else (x + odd, even)) (0, 0) lst
 (* or *)
 let sum_even_odd lst = 
-  List.fold_left (fun (odd, even) -> if x mod 2 <> 0 then (odd + x, even) else (odd, even + x)) (0, 0) lst
+  List.fold_left (fun (odd, even) x -> if x mod 2 <> 0 then (odd + x, even) else (odd, even + x)) (0, 0) lst
 (* too far away; need much more steps forward *)
 (* let odd_list = 
   List.fold_left (fun x -> x mod 2 == 1) [] lst in
