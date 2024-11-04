@@ -7,6 +7,7 @@ let rev_map f lst =
 (* keyword of fun *)
 (* fold_left to rev *)
 (* how to pass the function *)
+(* add at front *)
 
 
 (* 1b *)
