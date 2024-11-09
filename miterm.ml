@@ -1,5 +1,5 @@
 (* 1a *)
-(* rev_map f [1; 2; 3] -> [9; 4; 1]*)
+(* rev_map f [1; 2; 3] -> [9; 4; 1] *)
 let rev_map f lst =
   List.fold_left (fun acc x -> (f x) :: acc) [] lst
 
@@ -35,7 +35,7 @@ let rec intersperse x lst =
 
 
 (* 3a *)
-(* remove_all_tr 3 [1; 2; 3; 4] -> [1; 2; 4]*)
+(* remove_all_tr 3 [1; 2; 3; 4] -> [1; 2; 4] *)
 let remove_all_tr x lst = 
   let rec aux acc x lst =
     match lst with
