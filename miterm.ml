@@ -15,7 +15,9 @@ let rev_map f lst =
 (* sum_odd_even [1; 2; 3] -> (4, 2) *)
 let sum_odd_even lst =
   List.fold_left (fun (odd, even) x -> if x mod 2 = 0 then (odd, x + even) else (x + odd, even)) (0, 0) lst
+
 (* or *)
+
 let sum_even_odd lst = 
   List.fold_left (fun (odd, even) x -> if x mod 2 <> 0 then (odd + x, even) else (odd, even + x)) (0, 0) lst
 (* too far away; need much more steps forward *)
