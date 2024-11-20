@@ -1,4 +1,5 @@
-module StringMap = Map.Make(String)   (* Map module setup key as String *)
+(* Map module setup key as String *)
+module StringMap = Map.Make(String)   
 
 type t = (string * int) list StringMap.t
 type edge = string * string * int
@@ -34,26 +35,6 @@ let vertices (graph : t) : string list =
       let destination = List.map fst neighbors in
       v1 :: (destination @ acc)) graph []
     |> List.sort_uniq compare
-
-
-(* 
-  let compare_edge (v1, v2, l) (v1', v2', l') =
-  let c1 = String.compare v1 v1' in
-  if c1 <> 0 then c1
-  else
-    let c2 = String.compare v2 v2' in
-    if c2 <> 0 then c2
-    else Int.compare l l'
-
-  let vertices (graph : t) : string list =
-    List.fold_left
-      (fun acc (src, neighbors) ->
-        let acc = if List.mem src acc then acc else src :: acc in
-        List.fold_left (fun acc (dest, _) -> if List.mem dest acc then acc else dest :: acc) acc neighbors)
-      []
-      graph
-    |> List.sort_uniq String.compare
-*)
 
 let neighbors (vertex : string) (graph : t) : (string * int) list = 
   match StringMap.find_opt vertex graph with

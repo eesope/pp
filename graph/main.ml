@@ -1,4 +1,5 @@
-(* prerequisites: inside the utop digraph.cmo is loaded. eg: ocamlbuild main.native *)
+(* prerequisites: digraph.cmo is loaded on utop *)
+
 open Digraph
 module Graph = Digraph
 
@@ -6,13 +7,13 @@ let dijkstra (start : string) (goal : string) (graph : Graph.t) : int * string l
   let module StringSet = Set.Make(String) in
   let module StringMap = Map.Make(String) in
 
-  (* helper function: recursively process the priority queue *)
+  (* process the priority queue *)
   let rec aux visited priority_que length previous =
     match priority_que with
     | [] -> failwith "No suitable path"
     | (cost, current_vertex) :: rest ->
         if current_vertex = goal then
-
+          
           (* look through all the previous map to find final result *)
           let rec find_shortest_path acc vertex =
             if vertex = start then vertex :: acc
