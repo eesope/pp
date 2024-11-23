@@ -23,7 +23,9 @@ let add_edge (edge : edge) (graph: t) : t =
   | None -> StringMap.add v1 [(v2, l)] graph 
 
 let of_edges (edges : edge list) : t =
-  List.fold_left (fun graph edge -> add_edge edge graph) empty edges
+  edges
+  |> List.sort compare 
+  |> List.fold_left (fun graph edge -> add_edge edge graph) empty 
 
 let edges (graph : t) : edge list = 
   StringMap.fold (fun v1 neighbors acc -> 
@@ -38,5 +40,5 @@ let vertices (graph : t) : string list =
 
 let neighbors (vertex : string) (graph : t) : (string * int) list = 
   match StringMap.find_opt vertex graph with
-  | Some neighbors -> neighbors
+  | Some neighbors -> List.sort_uniq compare neighbors
   | None -> []
