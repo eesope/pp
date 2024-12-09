@@ -4,7 +4,11 @@ i.e., no two queens are in the same row, the same column, or on the same diagona
 
 (* [queens_posit n] returns int list of lists represents positions of queens in the grid; index is column# & value is row# *)
 
-
+(* 
+- set max possible queens 
+- put first queen on row1 upon total# of queens
+- brute force || backtracking tree
+*)
 
 
 
