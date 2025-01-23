@@ -1,0 +1,10 @@
+A12345678 5 # top student
+  A66666666 99
+high score
+Abc 88 # invalid ID
+A55555555 89a ! invalid score 
+A44444444 100
+A7777777
+
+
+

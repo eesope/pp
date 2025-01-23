@@ -1,0 +1,20 @@
+- an object can have only 1 owner
+- assignment/initialization either moves or copies the source 
+  * if the source doesn't implement the Copy trait, it is moved to the 
+    destination, i.e., ownership is transferred from the source to the
+    destination
+  * copy/move can also occur 
+    - when passing by value into a function
+    - returning by value from a function
+    - when pattern-matching
+- at any time, there can be
+  * at most 1 mutable reference (&mut) to an object, OR
+  * any number of immutable references (&) to an object
+- if an object has a reference to it, it cannot be written to
+- if an object has a mutable reference to it, it cannot be read or written
+  (the object is "frozen")
+- be aware of NLL (non-lexical lifetime)
+
+Copy trait:
+- arrays are Copy (i.e. implement the Copy trait) if their elements are Copy
+- tuples are Copy if their elements are Copy

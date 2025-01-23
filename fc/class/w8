@@ -1,0 +1,44 @@
+L for leaf
+not returning tree but the tree option
+Modnad motivate -> how to combine(bind) tree option to tree?
+monad is a box; 박스에 넣어서 값을 정리함
+
+그냥 t >>= 하면 아직 옵션 타입이고 return t >>= 이라고 해야함
+
+monad 이용하려면 두개의 함수를 정의해야함: 
+	return: 'a -> 'a t
+	                 (여기서 t 는 option; t 가 모나드가 됨; monatic value)
+	(>>=): 'a t -> ('a -> 'b t) -> 'b t
+					() 는 takes regular value and return monad value
+			여기 t 는 return t 여야함? maybe type rather than option type
+
+
+문제: option 값을 다른 함수에 적용할 수 없음
+해결법: 함수를 monatic value (option) 을 처리할 수 있게 함 -> 함수를 lift 해서 -> option 값을 받을 수 있도록 함
+
+
+generic 
+type constructor
+kind
+
+fish operator (>=>)
+
+list monad.
+
+list 의 원소를 쪼개서 처리하고 list 를 내놓으면 그 각 값 list 들을 합쳐서 큰 하나의 list 를 내놓음.
+
+guard 는 if else statement
+오늘 한 것 final 에 나옴 특히 monad, maybe monad? 
+
+state monad.
+haskell 은 state 없음; 근데 ocaml 은 실은 state 있으나 state monad 적으로 해보겠음
+
+type (...) state = State of ...
+(State f) 는 function 임? 스테이트를 펑션으로써 돌림; 실행시킴 
+
+
+not a function but just m1 followed by m2 ...?
+
+그러면 (>>) 은 @@ 이랑 비슷... 같은 것 아닌감
+
+let* 는 syntatic sugar

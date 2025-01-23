@@ -1,0 +1,27 @@
+- anonymous functions: 
+  fun x -> x * x
+  fun x y -> x + y (same as fun x -> fun y -> x + y)
+
+- insertion sort (see code)
+  * with and without comparison function
+  * labeled arguments 
+
+- higher-order function: a function that takes functions as arguments and/or
+  returns a function
+
+- (@@) and (|>) defined as:
+  let (@@) f x = f x
+  let (|>) x f = f x
+  * note: already in Stdlib
+
+- fold_left vs fold_right
+
+  Assume $ is a binary operator of the appropriate type
+
+  fold_left ($)  a [x1;x2;x3;x4]  = ((((a $ x1) $ x2) $ x3) $ x4)
+  fold_right ($) [x1;x2;x3;x4] a  = (x1 $ (x2 $ (x3 $ (x4 $ a)))) 
+
+  Hence signatures are:
+
+  val fold_left:  ('a -> 'b -> 'a) -> 'a -> 'b list -> 'a
+  val fold_right: ('a -> 'b -> 'b) -> 'a list -> 'b -> 'b

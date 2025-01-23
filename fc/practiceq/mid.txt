@@ -1,0 +1,25 @@
+[drop_while f lst] drop_while (fun x -> x mod 2 = 0) [2; 4; 6; 1; 3] = [1; 3]
+[zip_with f lst1 lst2] zip_with (+) [1; 2; 3] [4; 5; 6] = [5; 7; 9]
+[mapi f l] mapi (fun i x -> i + x) [1; 2; 3] = [1; 3; 5]
+[every n lst] every 2 [1; 2; 3; 4; 5] = [2; 4]
+[dedup lst] dedup [1; 1; 2; 4; 4; 4; 2; 1; 1] = [1; 2; 4; 2; 1]
+[group lst] group [1; 1; 2; 3; 3; 3] = [[1; 1]; [2]; [3; 3; 3]]
+[frequencies lst] frequencies [1; 1; 2; 3; 3; 3] = [(1, 2); (2, 1); (3, 3)]
+rev_map f [1; 2; 3] -> [9; 4; 1]
+sum_odd_even [1; 2; 3] -> (4, 2)
+intersperse 0 [1; 2; 3] -> [1; 0; 2; 0; 3]
+remove_all_tr 3 [1; 2; 3; 4] -> [1; 2; 4]
+drop 4 [3;2;7] = []
+drop 1 [3;2;7;] = [3]
+zip_tr [1; 2] ['a'; 'b'; 'c'] = [(1, 'a'); (2, 'b')]
+unzip_tr [(1, 'a'); (2, 'b')] = ([1; 2], ['a'; 'b'])
+dedup_tr [1; 1; 2; 3; 3; 3; 2; 1; 1] = [1; 2; 3; 2; 1]
+digits 3958 = [3; 9; 5; 8]
+int_of_digits [3; 9; 5; 8] = 3958
+list_of_string_tr "domingo" = ['d'; 'o'; 'm'; 'i'; 'n'; 'g'; 'o']
+is_permutation "hello" "leolh" = true
+[factorial n] tail-recursive
+[sqrt n] square root function as 0.5*(y+x/y)
+[twice f n] something do twice
+[dup str n] dup "yo" 3 = "yo yo yo"
+[shuffle lst] shuffle ['o';'a';'l';'m';'c'] = ['o'; 'c'; 'a'; 'm'; 'l']

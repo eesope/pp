@@ -1,0 +1,15 @@
+set type for binary search tree
+size (Node (1, "a", Node (2, "b", Leaf, Leaf), Leaf)) = 2
+[insert k v t] returns new key-value, if the key is already in the tree, update the value 
+[size t] returns the size of tree (number of nodes)
+[find k t] returns value if the key is found, None for key not found
+[largest t] returns largest key-value pair
+[delete z t] returns tree after delting the node of given key
+[of_list lst] returns tree after making one from the key-value pair in the given list
+[hight z t] returns hight of tree 
+[mem_t x t] returns boolean whether decide x is member of tree or not
+[right_right t] returns right node of right node
+[left t] returns left node
+[left_in_lst t] returns left node as list
+[left_right] returns right node of left node 
+[flip tree]

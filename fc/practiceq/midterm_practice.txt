@@ -1,0 +1,151 @@
+Useful modules and functions to know beforehand:
+- List
+-- fold_left
+-- fold_right
+-- rev
+-- append
+-- map / mapi
+-- filter
+-- sort
+-- hd / tl
+-- length
+
+- String
+-- init (maybe?)
+-- fold_left
+-- fold_right
+-- rev
+-- length
+-- map / mapi
+-- trim
+
+Useful things to know/review:
+- how to write functions in an argument or within another function
+- pattern matching
+- list cons :: or append @
+- order of operations / precedence
+- references
+- assignment to mutable variables
+- maybe loops? probably not but just in case?
+- type definitions
+- arrays (creating and reassigning elements)
+
+Questions:
+
+1) Write a function called weird_zip which takes two lists and combines the nth item in the first
+list with the n+1th item in the second list. Leftover/unused elements are discarded. The returned
+list is a list of tuples. Don't use any built-in functions.
+
+val weird_zip : 'a list -> 'b list -> ('a * 'b) list
+
+tests:
+weird_zip [1;2;3;4;5;6;7] [5;4;3;2;1];; returns [(1, 4); (2, 3); (3, 2); (4, 1)]
+weird_zip [2;4;6;8;10] ['a';'b';'c';'d'];; returns [(2, b); (4, c); (6, d)]
+weird_zip [1] ['a'];; returns []
+
+2) Write a function left_and_right which accepts a list of comparable elements (ie. int) and a target
+variable, and creates a list where all elements lower than the target are to the left of the target
+and all elements greater than the target are to the right of the target.
+(order of elements doesn't matter except for where the 5 is)
+(extra: return a sorted list where the elements are decreasing towards the left and increasing to
+the right of target)
+
+val left_and_right : 'a list -> 'a -> 'a list
+
+tests:
+left_and_right [3;2;7;6;8;9;4;1] 5;; returns [1;4;2;3;5;7;6;8;9]
+left_and_right [1;2;3;4;5;6;7;8;9] 5;; returns [4;3;2;1;5;5;6;7;8;9]
+left_and_right [4; 10; -10; 2; -7; 3] 0;; returns [-7; -10; 0; 4; 10; 2; 3]
+
+3) Write a function called is_anagram that takes two strings and returns true if they are anagrams
+of each other (one string is an anagram of another if both strings contain the same letters and same
+frequency of letters, ie. "tall boy" is an anagram of "toy ball"). Spaces don't count.
+
+val is_anagram : string -> string -> bool
+
+tests:
+is_anagram "tall boy" "ball toy";; returns true
+is_anagram "a            b  " "ba";; returns true
+is_anagram "polestar" "sole trap";; returns true
+is_anagram "fdsa" "asds";; returns false
+
+4) Using basic principles and no built-in functions implement filter/fold_left function that takes
+a list and folds the list element if it satisfies some condition. This is like calling a fold_left function
+where the function passed in includes an if statement that only passes the element if true.
+
+val filter_fold_left : ('a -> bool) -> ('acc -> 'a -> 'acc) -> 'acc -> 'a list -> 'acc
+
+tests:
+filter_fold_left (fun x -> x mod 3 = 0) (fun acc y -> List.append acc y) [] [1;2;3;4;5;6;12;13;14];;
+	returns [3;6;12]
+filter_fold_left (fun x -> x mod 2 = 0) (fun acc y -> acc + y) 0 [1;2;3;4;5;6;12;13;14];;
+	returns 21
+
+5) Implement both tail- and non-tail-recursive versions of a function that checks whether a list
+is a palindrome or not. Remember that tail recursive functions don't need additional processing when
+returning a result, whereas non-tail recursive functions are called and their results are returned
+through the stack back to the first time the function was called with possible additional processing
+at each return.
+
+val is_palindrome : 'a list -> bool
+val is_palindrome_tr : 'a list -> bool
+
+tests:
+is_palindrome [3;2;1;2;3];; returns true
+is_palindrome [4;3;2;1;2;1;3];; returns false
+is_palindrome [];; returns true
+
+6) Implement a stack using type definitions and functions. Include functions such as pop, peek, and
+push, as well as functions to return an empty stack and to check if a stack is empty.
+
+type 'a stack = Empty | Node of 'a * 'a stack
+val empty_stack : 'a stack = Empty
+val is_empty : 'a stack -> bool
+val push : 'a -> 'a stack -> 'a stack
+val pop : 'a stack -> 'a * 'a stack     (pop should return the value and the stack after removing value)
+val peek : 'a stack -> 'a
+
+test:
+let s = empty_stack;;	(initialize an empty stack)
+let s = push 5 s;;	(stack = 5)
+let s = push 3 s;;	(stack = 3 5)
+let s = push 1 s;;	(stack = 1 3 5)
+peek s;;		returns 1
+let i, s = pop s;;	returns 1, stack (stack = 3 5)
+peek s;;		returns 3
+let i, s = pop s;;	returns 3, stack (stack = 5)
+
+7) Using labelled, optional arguments with default values, implement the range function from Python
+that returns a list from start to end in some steps.
+
+val range = ?start:int -> ?step:int -> int -> int list
+
+tests:
+range 5;; returns [0;1;2;3;4]
+range ~start:5 0 ~step:(-1);; returns [5; 4; 3; 2; 1]
+range ~start:10 ~step:(-3) (-5);; returns [10; 7; 4; 1; -2]
+
+8) Write a function remove_vowels that takes a string and replaces all vowels with a space character.
+
+val remove_vowels : string -> string
+
+tests:
+remove_vowels "hello world";; returns "h ll  w rld"
+remove_vowels "";; returns ""
+remove_vowels "abc321ghi";; returns " bc321gh "
+
+9) Write a function merge_lists that takes an array of non-descending int lists and merges them in
+place, so that the first list in the array is a merged, non-descending int list with all elements
+and the rest of the lists are empty. The input array is guaranteed to have at least 2 non-empty lists.
+You are not allowed to use the List.concat or List.flatten functions.
+(inspired from a hard leetcode question, so go try merge k-lists on leetcode if you can do this lol)
+
+val merge_lists : 'a list array -> unit
+
+tests:
+let arr = [| [1;2;5]; [2;4;6]; [3;7;8] |];;
+merge_lists arr;;	(will change the array in place to [| [1;2;2;3;4;5;6;7;8]; []; [] |])
+arr;;
+let arr2 = [| [-10; 5; 10]; [-3; 0; 11]; [-3; -2; -1] |];;
+merge_lists arr2;;	(arr2 should = [| [-10; -3; -3; -2; -1; 0; 5; 10; 11]; []; []|]
+arr2;;

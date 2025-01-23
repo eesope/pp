@@ -1,0 +1,101 @@
+Infinite & Lazy Streams 
+
+- Infinite Streams:
+Streams are similar to lists in structure, having a head and tail.
+A lazy stream defers evaluation of elements until they are needed.
+
+type 'a infstream = Cons of 'a * (unit -> 'a infstream);; 
+// ( ) <- 안에 있는 내용 defer; 바로 처리 안함
+
+- Creating an Infinite Stream:
+
+from n function creates an infinite stream starting from n.
+
+let rec from n = Cons (n, fun () -> from (n + 1));;
+let nats = from 1;;
+
+누구는 natural number 0 부터 시작하고 누구는 1 부터 시작 -> 정의 없음
+albert 는 1 에서 시작
+왜? 알아보기 쉬우니까 ㅋ..
+
+// no need match statement bc only one pattern
+
+- Accessing Stream Elements:
+
+Function take retrieves the first n elements from a stream
+
+let rec take n (Cons (h, t)) = 
+ if n <= 0 then []
+ else h :: take (n - 1) (t ());;
+
+// t 는 fnction 임 왜냐면 t 는 unit -> 'a infstream 니까
+
+take 10 nats;;
+
+
+
+** lazy stream ... 오늘 하는 거 final 에 하나 이상 낼테니 다들 패스 하도록 하여라??? 특히 map lazy 같은 거 **
+monad 는 어려우니 시험에 안 낼 가능성이 높.....
+
+- Key Points on Lazy Streams and Evaluation
+Lazy Stream Types:
+type 'a lazystream = Cons of 'a * 'a lazystream Lazy.t
+
+
+Lazy.t is recommended by OCaml documentation for lazy evaluation.
+
+
+// fold 빼고 list function 전부 따라할 수 있음 -> fold 는 vector value 위해 traverse needed so can't
+
+
+// list for palindrom, reverse 
+
+POWERFULLLLLL -> unfold
+using sequence?
+
+strict (eager) VS lazy language
+haskell            OCaml
+
+lazy (1 + 1)
+-> () 안에 있는 것들 계산을 미룸
+Lazy.force x
+-> 이제 시간이 되었으니 x를 계산하라고 함
+
+type 'a lazystream = Cons of 'a * 'a lazystream Lazy.t;; <- OCaml document 에서 언제나 t 를 사용하기를 권장함, 왜냐면....?
+
+
+s is the lowest president? 계산 우선 순위 낮음..?
+Unfold creates a sequence based on a generator function.
+
+
+unfold 사용해서 fib 
+let fibs2 = unfold (fun (a, b) -> (a, (b, a + b))) (0, 1);;
+take 5 fibs;;
+** 값을 기억하고 다음에 불렀을 때 기억된 지점부터 시작됨 **
+memorization via table (..)
+remember the value -> property of lazyness
+?unfold 안에 lazy 있음?
+
+## final 
+bstree with..?
+어떤 순서로 tree 읽어야하는지 
+
+type 'a bstree = Leaf | Node of {value : 'a; left: 'a bstree; right: 'a bstree};; -> short name as v, l, r is ok
+// using tuple, record, etc...
+
+real world OCaml; punning; field punning?
+
+tree 가 어떤 순서로 들어가게 되는지?
+
+modudle ListExt = struct
+ include List
+ let rec dedup l =
+ match l with
+ | x::y::rest -> if x = y then dedup (y::rest) else x::dedup (y::rest)
+  _ -> l
+
+
+  ListExt.length
+  ListExt.dedup [1; 1; 2; 3];;
+
+

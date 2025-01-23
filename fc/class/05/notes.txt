@@ -1,0 +1,6 @@
+- a module can contain module definitions as well as module type definitions
+- a module type definition cannot contain module definitions; it can contain module type definitions
+Given module M and module type S
+if M : S then
+- everything specified in S must be defined in M; this includes module type definitions
+- anything in M not specified in S is not accessible from outside

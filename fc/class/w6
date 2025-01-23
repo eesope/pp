@@ -1,0 +1,88 @@
+** what idea leads to that syntax or flow -> remember and understand **
+
+
+# Module
+- 모듈의 사용
+- 특정 상황에서의 모듈 적용 방법
+- module type
+- abstract type
+- functor
+- myqueue
+- bastree
+
+1. Module Basics
+
+- Module: 파일 이름 = 모듈 이름 eg) myqueue.ml -> Myqueue 
+- 모듈 사용법 #directory, #load, #open Modulename
+- Module Definition: 
+    - struct ... end
+    - 그 안에 변수와 함수뿐만 아니라 다른 모듈 정의나 모듈 타입 정의도 포함
+- Module Type Definition: 
+    - sig ... end
+    - 다른 모듈 정의는 포함할 수 없고 오직 모듈 타입 정의만 포함
+
+2. Abstract Type and Abstraction
+
+- Abstract Type: 
+    - mli 파일(모듈 인터페이스 파일)을 통해 모듈이 추상화
+    - ml 파일에 있는 구체적인 구현을 노출X, 필요한 타입과 함수의 인터페이스만 정의해 외부에서 볼 수 있게 함
+- No mli file vs mli file:
+    - mli 파일이 없는 경우: 모듈 구현(ml 파일) 전체가 외부에 노출
+    - mli 파일이 있는 경우: ml 파일의 구현이 숨겨지며, 필요한 부분만 노출 -> 모듈 추상화
+    - Example - Myqueue:
+        - myqueue.ml에서 큐를 구현 ->
+        이를 추상화하는 myqueue.mli 파일을 통해 외부에서는 큐의 내부 구조를 알지 못하게 할 수 있음 
+        대신 필요한 연산(enqueue, dequeue 등)만 제공하여 사용법을 간단하게 유지
+
+3. Module Type (sig) and Interface
+
+- module type 은 인터페이스 역할을 함
+- 어떤 모듈(module)이 이 타입을 따르기 위해서는 sig에서 정의한 함수나 값들을 모두 포함해야 함
+    - eg) 
+    module type S = sig 
+        val x : int 
+    end  
+    
+    module M : S  
+
+    //모듈 타입 S 가 있고, S 타입인 모듈 M 이 있다면 
+    M에는 x라는 int 값이 반드시 정의되어야 함
+
+
+4. Parameterized Module (Functor)
+
+- Functor: 
+    - 모듈을 매개변수로 받아 다른 모듈을 반환하는 기능
+    - 특정 함수가 다른 모듈에 의존할 때 유용
+    - eg) 
+    Int.compare 을 강제 사용하게 하려면, 
+    유저가 compare를 직접 입력해도 자동으로 Int.compare가 사용되도록 Functor를 정의할 수 있음
+
+    - Functor 예시:
+    module F (M : S) : S' = struct
+      (* S를 만족하는 M을 인자로 받아 S' 타입을 만족하는 모듈을 반환 *)
+    end
+
+
+- Map.Make 같은 Functor는 내부적으로 compare를 이용해 요소를 정렬 -> 사용 시 compare 필요
+- to print -> need iter
+
+
+5. Example - BSTree와 Int Module
+
+- BSTree 모듈에서 요소를 비교할 때 Int.compare를 사용할 수 있음 
+- 이 경우 Int 모듈을 Functor로 주입 -> BSTree에서 필요한 compare 함수를 제공하게 함
+
+
+6. Nested Module과 Signature (Module의 Signature로서의 ml 파일)
+
+- module M = struct ... end와 같은 구조에서, 내부적으로 또 다른 모듈을 포함할 수 있음 
+- ml 파일 자체도 하나의 모듈로서 Signature 역할을 함
+- **중첩된 모듈(nested module)**: 
+    더 큰 모듈에서 기능을 세분화하고 독립적으로 사용할 수 있게 해줌
+
+7. Deque와 List.rev 사용
+- 리스트의 아이템을 반대로 누적할 때 List.rev가 필요 
+- 이때 List.fold_left로 누적 -> List.rev을 통해 원래 순서로 돌리기: 효율성 및 스택 오버플로 방지에 도움
+
+

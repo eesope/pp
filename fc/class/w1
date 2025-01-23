@@ -1,0 +1,143 @@
+# Functional Programming
+
+- learn basics effectively 시험에는 구글링 못하니까 기본적인 것인 것들은 외워두라
+
+
+### definitions
+definitions don't have value
+
+define lik let x = 1;;
+
+let square x = x * x 
+function
+val swuare : int -> int = <fun>
+
+function call (f(x))-1
+
+### expressions
+
+### value
+
+
+utop(indirect shell) needs ;;
+
+very strongly type
+type inference
+
+in a functional lang all are immutable
+
+ocaml is almost functional programming
+
+you need to write everything recursively
+
+### tail-recursion 
+if the recursive call is no need to be changed again; only need to call the recursive function no need anything extra
+
+function recursively calls 
+memory usage
+
+
+what does ""val fact; : int -> int -> int = <fun> mean?
+	if the function takes three argument; specifies three arguments' types
+
+ == > stack doesn't grow = tail recursive
+
+ let fact_tr n = fact' n 1;;
+ val fact_tr : int -> int = <fun>
+
+- equality (structial(=), physically(==))
+1<>1 
+- "not" only act on bool
+- not;;
+- fuctions are value
+
+
+### pattern matching is powerful
+let (x, y, z) = (1, "hello", 1.1);;
+val x : int = 1 and so on...
+tupple
+
+### list type
+seperate by semi-colon
+[1;2;3];;
+int list = [1; 2; 3;] 
+[(1, "hell")]
+type (int * string) list
+
+1:: [2;3];
+int list = [1; 2; 3]
+
+---
+
+h::t
+head tail
+a::l
+x::xs 
+pttern matching
+
+
+let rec length l = //rec for recursive
+	match l with
+	| [] -> 0 //length of empty list is zero
+	| x :: cs -> 1 + length xs //head 
+
+let rec length_aux acc l //accumulative, helper function
+	match l with
+	| [] -> acc
+	| x :: xs -> length_aux (acc + 1) xs //recursively call length_aux
+
+
+let length_tr l = length_aux 0 l // add argument
+
+//reverse function
+
+let reverse l = 
+	let rec qux l acc = 
+		 match l with
+		 | [] -> acc
+		 | x :: cs -> aux cs (x :: acc)
+	 in
+	 aux l []
+
+
+//write some test
+
+let test_reverse () = 
+	assert(reverse [1;2;3] = [3;2;1]);
+	assert(reverse [] = [])
+
+
+let rec equal l1 l2 =
+	match l1, l2 with
+	| [], [] -> true
+	| _, [] | [], _ -> false // don't care first one 
+	| x1 :; xs1, x2 :: xs2 ->
+	x1 = x2 && equal xs1 xs2
+	eq x1 x2 && equal eq xs1 xs2
+
+
+
+eqal (=) can be used as a function by surrounding ()
+
+1 + 2;;
+(+) 1 2;;
+
+
+---
+augument 어디로 들어가는지
+theory, types
+
+length must be polymorphic (generic in java, subtype polymorphism)
+paramatric polymorphism
+
+---
+
+functional programming need to return something
+
+pass -> return unit()
+nonpass -> return exception
+
+utop
+#use 'filename.ml';;
+function_name argument;;
+

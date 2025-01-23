@@ -1,0 +1,123 @@
+records
+record type
+
+ambiguity
+name is define before instructor like in student
+so name studnet works but name instructor doesn't  work
+
+type constructor
+value constructor
+
+record can have mutable field
+
+
+with keyword
+
+- references
+let r  = ref 0;;
+
+!r
+r := 1
+
+incr r
+decr r
+
+
+reference type 
+
+remember things
+
+
+- arrays
+- I/O
+
+
+io is imperative
+; semicolon means sequencing -> do something and do next thing
+
+let print_int_array a =
+
+
+downto
+done
+for loop
+
+i = 0 not possible bcus it's immutable! => instead => we use ref 
+REFERENCE
+sieve of eratosthenes; remaining numbers are all prime number
+
+mapi -> convert it to list 
+array can't be resized basically
+
+while ... do
+	...
+done
+
+for i = 0 to n-1 ... do
+done
+
+isprime.(i) <- () 인지 [] 인지 구별 잘 하기
+
+dereferencing !
+
+exception 할 때 Failure _ ->
+
+?? unit type
+
+io is not programming but the feature that provided by os?
+standard input becomes the file
+__ < __
+
+c file io
+
+---
+let rec count acc =
+	try
+		ignore @@ read_line ();
+		count (acc + 1)
+	with
+	| End_of_file -> acc <- no need to return anything since don't wnat the content but the total # of lines so -> ()
+
+let () = 
+	print_int @@ count 0;
+	print_newline ()
+---
+
+printf function at C
+
+file io to read or returning the information
+
+%d 
+just stop when there's something strange
+
+reading string and returning string?
+
+Sacn.sscanf " 123a " " %s"
+int_of_string 
+
+open_in "file_name";;
+
+let rec 어쩌구 ic acc =  // input channel
+
+
+let () =
+	for i = 0 to progrma name
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

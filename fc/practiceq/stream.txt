@@ -1,0 +1,10 @@
+[from n]
+[nats]
+[hd infs]
+[tl infs]
+[take n infs]
+[drop n infs]
+[map f infs]
+[map2 f infs infs]
+[fibs]
+[unfold f x] returns infs with function and init value of x

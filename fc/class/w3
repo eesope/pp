@@ -1,0 +1,98 @@
+https://ocaml.org/docs/basic-data-types#user-defined-types
+
+
+?a optional; specify to ?a:(Some 1)
+simple way is always use ~ tilda JUST REMEMBER ALWAYS USE TILDAAAAAAAA
+
+occationally type annotation 'a something like that
+
+generic  type
+
+### type annotation ' can be mean differet
+
+if @signature: can be any type
+
+if @typed in code by programmer
+compiler can tell x and y is same type when you write let add (x: 'a) (y: 'a) = x + y;;
+make it more repective type
+
+
+map, mapi, fold_left, fold_right @String 
+
+haskell somewhat..
+maybe monad : type 'a maybe = Nothing | Just of 'a
+Haskell: Nothing and Just 2
+OCaml: None and Some 2
+
+Error "error message or code" and Ok 2 <- this can give you a reason or what's going on
+
+
+the way of thingking things; probs; solution
+
+why do you use float option rather than float option' ???
+bcuz there is some and none so maybe you can get get........? return type fix to .......
+
+
+haskell either type left, right
+why put resutl' not 'result? -> type constructor
+
+type'a option
+ type variable, type constructor 
+
+(1, 2) is value -> ('a, 'b) result
+int * int is type value-> this is not ('a, 'b) result or ('a * 'b) result
+(int, int) cannot be in type
+
+
+## binary search tree
+
+
+type 'a bstree = Leaf | Node of 'a * 'a bstree * 'a bstree
+list is recursive type
+this is also
+
+standard bst -> same size of node or height?
+
+## deleting a node
+if there's no subtree -> delete node -> replace by a leaf
+else (has a subtree) -> replace with other node:
+ - right tree: smallest number bigger than that node
+ - left tree: biggest number smaller than that node
+
+
+at least write Leave and Node loll
+throw exception if empty tree leaf
+
+아무것도 없으면 Leaf
+value 있으면 that value
+
+# make a module 
+if you have a file -> that is a module when you compile
+
+ocamlbuild bstree2.cmo <- build
+ls
+ls _build/
+
+
+
+#directory "_build"
+#load "bstree2.cmo"
+Bstree2.of_list [;lskjdlk]
+
+open Bstree2;;
+of_list [asfas]
+#show Bstree
+
+helper function sig -> mli 파일에 들어가지않고 히든
+
+
+
+let rec fold f acc t =
+ match
+
+
+
+
+https://mac.install.guide/commandlinetools/
+https://ocaml.org/exercises#55
+https://ocaml.org/exercises#97
