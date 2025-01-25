@@ -23,7 +23,6 @@ fn to_format(list: Vec<String>) {
 
         record_map.entry(score).or_insert_with(Vec::new).push((fname, lname));
     }
-
     let total: i32 = record_map.keys().map(|&key| key).sum();
     let average: f32 = total as f32 / record_map.len() as f32;
     println!("average: {:.1}", average);
@@ -50,7 +49,6 @@ fn to_format(list: Vec<String>) {
     }
 }
 
-
 pub fn main() {
     let student_list: Vec<String> = read_lines().unwrap();
 
@@ -63,5 +61,4 @@ pub fn main() {
         to_format(student_list.clone());
         println!("-----------------------------------------------");
     }
-
 }

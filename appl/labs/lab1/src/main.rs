@@ -1,5 +1,7 @@
-mod students;
+// mod students;
+mod primes; 
 
 fn main() {
-    students::main();
+    // students::main();
+    primes::main();
 }
