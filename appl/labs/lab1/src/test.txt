@@ -1,0 +1,4 @@
+ned flanders 99
+homer simpson 25
+monty burns 65
+lisa simpson 100

@@ -1,0 +1,17 @@
+- syntax:
+  let f1 = |x: i32| -> i32 { x + 1 };
+  let f2 = |x| { x + 1 };  // generally compiler can infer type
+  let f3 = |x| x + 1;  // braces are optional if there's only 1 expression
+- closures can borrow or moves captured value at the time it is defined
+  (see code examples)
+- every closure has its own type, but it implements one or more of the 3
+  Fn traits (Fn, FnMut, FnOnce)
+  Fn <: FnMut <: FnOnce (A <: B means A is a subtrait of B)
+  * every closure is FnOnce (i.e., can be called once)
+  * this means, e.g., that if a function takes a FnMut, we can pass
+    in a Fn
+
+- examples:
+  fn g<F>(f: F) where F: Fn(..) -> .. { .. }
+  fn g<F>(mut f: F) where F: FnMut(..) -> .. { .. }
+  fn g<F>(f: F) where F: FnOnce(..) -> .. { .. }

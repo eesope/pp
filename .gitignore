@@ -1,3 +1,6 @@
 .DS_Store
 _build
 *.pdf
+target
+Cargo.lock
+Cargo.toml
