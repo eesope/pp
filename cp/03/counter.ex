@@ -1,4 +1,4 @@
-defmodule Counter.Server do
+  defmodule Counter.Server do
   use GenServer
 
   # client
@@ -30,4 +30,3 @@ defmodule Counter.Server do
     {:noreply, state + 1}
   end
 end
-

@@ -1,53 +1,69 @@
-defmodule CardServer do
+defmodule Server do
 
+  # client
   def start() do
-    Process.register(spawn(fn -> new() end), __MODULE__)
+    pid = spawn(fn -> loop(generate_deck()) end)
+    pid
   end
 
-  defp new() do
+  def new(pid) do
+    send(pid, {:new, generate_deck()})
+    :ok
+  end
+
+  defp generate_deck() do
     faces = ["J", "Q", "K", "A"]
     numbers = 2..10 |> Enum.to_list()
     symbols = [0x2663, 0x2666, 0x2665, 0x2660]
-    new_deck =
-      for order <- numbers ++ faces, symbol <- symbols do
-        "#{order}#{<<symbol::utf8>>}"
-      end
-    loop(new_deck)
-  end
-
-  def shuffle() do
-    send(__MODULE__, :shuffle)  #request only, no need to reply
-  end
-
-  def count() do
-    send(__MODULE__, {:count, self()})
-    receive do
-      count -> count
+    for order <- numbers ++ faces, symbol <- symbols do
+      "#{order}#{<<symbol::utf8>>}"
     end
   end
 
-  def deal(n \\ 1) do
-    send(__MODULE__, {:deal, n, self()})  #giving cards
+  def shuffle(pid) do
+    send(pid, :shuffle)
+    :ok
+  end
+
+  def count(pid) do
+    send(pid, {:count, self()})
+    receive do
+      count -> count
+    after
+      2000 -> :error_timeout
+    end
+  end
+
+  def deal(pid, n \\ 1) do
+    send(pid, {:deal, n, self()})
     receive do
       {:ok, cards} -> {:ok, cards}
       {:error, reason} -> {:error, reason}
+    after
+      2000 -> {:error, :timeout}
     end
   end
 
+  # server loop
   defp loop(deck) do
     receive do
-      {:shuffle} ->
+      {:new, new_deck} ->
+        loop(new_deck)
+
+      :shuffle ->
         loop(Enum.shuffle(deck))
+
       {:count, from} ->
         send(from, length(deck))
         loop(deck)
+
       {:deal, n, from} ->
         cond do
           n <= 0 ->
             send(from, {:error, "Please request at least 1 card."})
             loop(deck)
 
-          length(deck) < n ->
+          n > length(deck)->
             send(from, {:error, "Not enough cards to deal."})
             loop(deck)
 
@@ -56,8 +72,7 @@ defmodule CardServer do
             send(from, {:ok, cards})
             loop(left_deck)
         end
-        _ -> loop(deck)
+      _ -> loop(deck)
     end
   end
-
 end
