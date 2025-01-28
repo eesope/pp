@@ -1,13 +1,13 @@
 defmodule Server do
+  use GenServer
 
   # client
   def start() do
-    pid = spawn(fn -> loop(generate_deck()) end)
-    pid
+    GenServer.start(__MODULE__, :generate_new_deck)
   end
 
   def new(pid) do
-    send(pid, {:new, generate_deck()})
+    GenServer.cast(pid, :new)
     :ok
   end
 
@@ -21,58 +21,51 @@ defmodule Server do
   end
 
   def shuffle(pid) do
-    send(pid, :shuffle)
-    :ok
+    GenServer.cast(pid, :shuffle)
   end
 
   def count(pid) do
-    send(pid, {:count, self()})
-    receive do
-      count -> count
-    after
-      2000 -> :error_timeout
-    end
+    GenServer.call(pid, :count)
   end
 
   def deal(pid, n \\ 1) do
-    send(pid, {:deal, n, self()})
-    receive do
-      {:ok, cards} -> {:ok, cards}
-      {:error, reason} -> {:error, reason}
-    after
-      2000 -> {:error, :timeout}
-    end
+    GenServer.call(pid, {:deal, n})
   end
 
-  # server loop
-  defp loop(deck) do
-    receive do
-      {:new, new_deck} ->
-        loop(new_deck)
+  # server callbacks
+  @impl true
+  def init(:generate_new_deck) do
+    deck = generate_deck()
+    {:ok, deck}
+  end
 
-      :shuffle ->
-        loop(Enum.shuffle(deck))
+  @impl true
+  def handle_cast(:new, _deck) do
+    new_deck = generate_deck()
+    {:noreply, new_deck}
+  end
 
-      {:count, from} ->
-        send(from, length(deck))
-        loop(deck)
+  @impl true
+  def handle_cast(:shuffle, deck) do
+    shuffled_deck = Enum.shuffle(deck)
+    {:noreply, shuffled_deck}
+  end
 
-      {:deal, n, from} ->
-        cond do
-          n <= 0 ->
-            send(from, {:error, "Please request at least 1 card."})
-            loop(deck)
+  @impl true
+  def handle_call(:count, _from, deck) do
+    {:reply, length(deck), deck}
+  end
 
-          n > length(deck)->
-            send(from, {:error, "Not enough cards to deal."})
-            loop(deck)
-
-          true ->
-            {cards, left_deck} = Enum.split(deck, n)
-            send(from, {:ok, cards})
-            loop(left_deck)
-        end
-      _ -> loop(deck)
+  @impl true
+  def handle_call({:deal, n}, _from, deck) do
+    cond do
+      n <= 0 ->
+        {{:error, "Please request at least 1 card."}, deck}
+      n > length(deck) ->
+        {:reply, {:error, "Not enough cards to deal."}, deck}
+      true ->
+        {cards, left_deck} = Enum.split(deck, n)
+        {:reply, {:ok, cards}, left_deck}
     end
   end
 end
