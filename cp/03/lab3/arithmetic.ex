@@ -1,7 +1,7 @@
 defmodule Arithmetic.Worker do
   use GenServer
 
-  def start(_) do
+  def start() do
     GenServer.start(__MODULE__, :no_state)
   end
 
@@ -37,18 +37,15 @@ defmodule Arithmetic.Server do
     GenServer.start(__MODULE__, n, name: __MODULE__)
   end
 
-  # Picked worker will do the task; answer
+  # Picked worker carry out the task
   def square(x) do
     {:ok, {:square, worker}} = GenServer.call(__MODULE__, {:square, x})
     GenServer.call(worker, {:square, x})
-    # IO.puts("Result: # from #{self()}")
-
   end
+
   def sqrt(x) do
     {:ok, {:sqrt, worker}} = GenServer.call(__MODULE__, {:sqrt, x})
     GenServer.call(worker, {:sqrt, x})
-    # GenServer.call(w_pid, {:square, x})
-
   end
 
   # server callbacks
@@ -56,7 +53,7 @@ defmodule Arithmetic.Server do
   def init(n) do
     # Distribute tasks in round-robin fashion
     workers = 1..n |> Enum.map(fn _ ->
-      {:ok, pid} = Arithmetic.Worker.start(:no_args)
+      {:ok, pid} = Arithmetic.Worker.start()
       IO.puts("Worker: #{inspect(pid)}")
       pid
     end)
@@ -66,10 +63,10 @@ defmodule Arithmetic.Server do
     {:ok, state}
   end
 
-  # pick worker -> one handle call do both job
+  # pick the worker for each job
   @impl true
   def handle_call({request, _x}, _from, state = %{workers: workers, next: index, count: n}) do
-    w_pid = Enum.at(workers, index)  # pick worker
+    w_pid = Enum.at(workers, index)
     w_set = {:ok, {request, w_pid}}
 
     case request do
