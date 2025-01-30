@@ -11,7 +11,7 @@ defmodule Arithmetic.Worker do
   end
 
   @impl true
-  def handle_call({:square, x}, from, :no_state) do
+  def handle_call({:square, x}, _from, :no_state) do
     result = x * x
     reply = "Result: #{result} @worker: #{inspect(self())}"
 
@@ -19,7 +19,7 @@ defmodule Arithmetic.Worker do
   end
 
   @impl true
-  def handle_call({:sqrt, x}, from, :no_state) do
+  def handle_call({:sqrt, x}, _from, :no_state) do
     Process.sleep(4000)
     result = if x >= 0, do: :math.sqrt(x), else: :error
     reply = "Result: #{result} @worker: #{inspect(self())}"
@@ -68,7 +68,7 @@ defmodule Arithmetic.Server do
 
   # pick worker -> one handle call do both job
   @impl true
-  def handle_call({request, x}, _from, state = %{workers: workers, next: index, count: n}) do
+  def handle_call({request, _x}, _from, state = %{workers: workers, next: index, count: n}) do
     w_pid = Enum.at(workers, index)  # pick worker
     w_set = {:ok, {request, w_pid}}
 
