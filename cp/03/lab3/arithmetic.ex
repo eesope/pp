@@ -13,7 +13,7 @@ defmodule Arithmetic.Worker do
   @impl true
   def handle_call({:square, x}, from, :no_state) do
     result = x * x
-    reply = "Result: #{result} @ worker: #{inspect(self())}"
+    reply = "Result: #{result} @worker: #{inspect(self())}"
 
     {:reply, reply, :no_state}
   end
@@ -22,7 +22,7 @@ defmodule Arithmetic.Worker do
   def handle_call({:sqrt, x}, from, :no_state) do
     Process.sleep(4000)
     result = if x >= 0, do: :math.sqrt(x), else: :error
-    reply = "Result is #{result} @ worker: #{inspect(self())}"
+    reply = "Result: #{result} @worker: #{inspect(self())}"
 
     {:reply, reply, :no_state}
   end
