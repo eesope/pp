@@ -4,7 +4,7 @@ fn main() {
     println!("{v:?}");
     c();
     c();
- 
+
     let mut v = vec![1, 2, 3, 4];
     let mut c = || v.push(-1);  // mutably borrow v; impl FnMut
     // println!("{v:?}");  // can't borrow v again
