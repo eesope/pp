@@ -57,10 +57,11 @@ defmodule Server do
   end
 
   @impl true
+  def handle_call({:deal, n}, _from, _deck) when not is_integer(n), do: raise "Deal must be a positive number!"
   def handle_call({:deal, n}, _from, deck) do
     cond do
       n <= 0 ->
-        {{:error, "Please request at least 1 card."}, deck}
+        {:reply, {:error, "Please request at least 1 card."}, deck}
       n > length(deck) ->
         {:reply, {:error, "Not enough cards to deal."}, deck}
       true ->
