@@ -29,7 +29,7 @@ defmodule Arithmetic.Worker do
 end
 
 # ----------------------------------------------------------- #
-
+# work divisor && monitor
 defmodule Arithmetic.Server do
   use GenServer
 
@@ -54,6 +54,7 @@ defmodule Arithmetic.Server do
     # Distribute tasks in round-robin fashion
     workers = 1..n |> Enum.map(fn _ ->
       {:ok, pid} = Arithmetic.Worker.start()
+      Process.monitor(pid)
       IO.puts("Worker: #{inspect(pid)}")
       pid
     end)
@@ -68,13 +69,21 @@ defmodule Arithmetic.Server do
   def handle_call({request, _x}, _from, state = %{workers: workers, next: index, count: n}) do
     w_pid = Enum.at(workers, index)
     w_set = {:ok, {request, w_pid}}
+    {:reply, w_set, %{state | next: rem(index + 1, n)}}
+  end
 
-    case request do
-        :square ->
-          {:reply, w_set, %{state | next: rem(index + 1, n)}}
+  # monitored worker die -> receive :DOWN msg
+  @impl true
+  def handle_info({:DOWN, _ref, :process, died_pid, _reason}, state = %{workers: workers, count: _n}) do
+    IO.puts("Worker #{inspect(died_pid)} died. Replacing with a new worker...")
+    {:ok, new_pid} = Arithmetic.Worker.start()
+    Process.monitor(new_pid)
+    IO.puts("New worker: #{inspect(new_pid)}")
 
-        :sqrt ->
-          {:reply, w_set, %{state | next: rem(index + 1, n)}}
-    end
+    new_workers = Enum.map(workers, fn worker_pid ->
+      if worker_pid == died_pid, do: new_pid, else: worker_pid
+    end)
+
+    {:no_reply, %{state | workers: new_workers}}
   end
 end

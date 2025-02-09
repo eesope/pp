@@ -1,0 +1,11 @@
+- iex -S mix
+- alias Counter.Worker, as: CW
+- alias Counter.WorkerSupervisor, as: CS
+- CS.start_worker("c1")
+- CS.start_worker("c2")
+- CS.start_worker("c3")
+- CW.inc("c1")
+- CW.inc("c1")
+- CW.value("c1")
+- CW.inc("c1", :abc)
+- CW.value("c1") 
