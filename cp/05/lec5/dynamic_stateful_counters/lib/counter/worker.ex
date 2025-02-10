@@ -19,6 +19,9 @@ defmodule Counter.Worker do
   end
 
   def init(name) do
+    # ETS 테이블(@store)에서 이 워커의 상태를 찾고
+    # ETS에서 {name, v} 형태의 튜플이 있으면 v를, 없으면 0을 기본값으로 사용
+
     value =
       case :ets.lookup(@store, name) do
         [{^name, v}] -> v
