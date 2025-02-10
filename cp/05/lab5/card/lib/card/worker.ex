@@ -2,24 +2,20 @@ defmodule Card.Worker do
   use GenServer
   @store Card.Store
 
-  # APIs
+  # API
   def start_link(name) do
-    IO.puts("Worker #{name} is restarting...")
+    IO.puts("Worker #{name} is (re)starting...")
     GenServer.start_link(__MODULE__, name, name: via(name))
   end
 
   def new(name), do: GenServer.cast(via(name), :new)
-
   def shuffle(name), do: GenServer.cast(via(name), :shuffle)
 
   def count(name), do: GenServer.call(via(name), :count)
 
-  def deal(name, n \\ 1) when is_integer(n) do
-    GenServer.call(via(name), {:deal, n})
-  end
-  def deal(_name, _n) do
-    raise ArgumentError, "You must at least deal 1 card."
-  end
+  def deal(name, n \\ 1)
+  def deal(name, n ) when is_integer(n), do: GenServer.call(via(name), {:deal, n})
+  def deal(_name, _n), do: raise(ArgumentError, "You must at least deal 1 card.")
 
   # private helper function
   defp via(name), do: {:via, Registry, {Card.Registry, {__MODULE__, name}}}
@@ -34,14 +30,14 @@ defmodule Card.Worker do
   end
 
 
-  # call backs
+  # callbacks
   @impl true
   def init(name) do
-    IO.puts("Worker #{name} restarted.")
+    IO.puts("Worker #{name} (re)started.")
 
     # find this worker's state in ets table
     deck =
-      case :ets.lookup(Card.store, name) do
+      case :ets.lookup(@store, name) do
         [{^name, saved_deck}] -> saved_deck
         [] -> generate_deck()
       end
@@ -50,21 +46,21 @@ defmodule Card.Worker do
   end
 
   @impl true
-  def handle_call(request, _from, {name, deck} = _state) do
+  def handle_call(request, _from, {name, deck} = state) do
 
     case request do
       :count -> result = length(deck)
-      {:result, result, deck}
+        {:reply, result, state}
 
       {:deal, n} when n == 0 ->
-        {:reply, {:error, "You must deal at least 1 card."}, deck}
+        {:reply, {:error, "You must deal at least 1 card."}, state}
 
       {:deal, n} when n > length(deck) ->
-        {:reply, {:error, "Not enough cards to deal."}, deck}
+        {:reply, {:error, "Not enough cards to deal."}, state}
 
       {:deal, n} when n < length(deck) ->
         {cards, left_deck} = Enum.split(deck, n)
-        {:reply, {:ok, cards}, left_deck}
+        {:reply, {:ok, cards}, {name, left_deck}}
     end
   end
 
@@ -84,7 +80,7 @@ defmodule Card.Worker do
 
   @impl true
   def terminate(_reason, {name, deck}) do
-    :ets.insert(Card.Store, {name, deck})
+    :ets.insert(@store, {name, deck})
     :ok
   end
 

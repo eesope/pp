@@ -15,7 +15,7 @@ defmodule Card.Application do
     ]
 
     # ets table to store worker's state
-    :ets.new(Card.Store, [:named_table, :public])
+    :ets.new(Card.Store, [:named_table, :public, :set])
 
     opts = [strategy: :one_for_one, name: Card.Supervisor]
     Supervisor.start_link(children, opts)
