@@ -5,13 +5,24 @@ defmodule Card.Worker do
   # APIs
   def start_link(name) do
     IO.puts("Worker #{name} is restarting...")
-    GenServer.start_link(__MODULE__, {:generate_new_deck, name}, name: via(name))
+    GenServer.start_link(__MODULE__, name, name: via(name))
   end
 
-  def new(name) do
-    GenServer.cast(via(name), {:new, name})
-    :ok
+  def new(name), do: GenServer.cast(via(name), :new)
+
+  def shuffle(name), do: GenServer.cast(via(name), :shuffle)
+
+  def count(name), do: GenServer.call(via(name), :count)
+
+  def deal(name, n \\ 1) when is_integer(n) do
+    GenServer.call(via(name), {:deal, n})
   end
+  def deal(_name, _n) do
+    raise ArgumentError, "You must at least deal 1 card."
+  end
+
+  # private helper function
+  defp via(name), do: {:via, Registry, {Card.Registry, {__MODULE__, name}}}
 
   defp generate_deck() do
     faces = ["J", "Q", "K", "A"]
@@ -22,25 +33,6 @@ defmodule Card.Worker do
     end
   end
 
-  def shuffle(name) do
-    GenServer.cast(via(name), {:shuffle, name})
-  end
-
-  def count(name) do
-    GenServer.call(via(name), {:count, name})
-  end
-
-  def deal(name, n \\ 1) do
-    if is_number(n) do
-      GenServer.call(via(name), {:deal, n})
-    else raise "You must deal at least 1 card!"
-    end
-  end
-
-  defp via(name) do
-    {:via, Registry, {Card.Registry, {__MODULE__, name}}}
-  end
-
 
   # call backs
   @impl true
@@ -48,23 +40,17 @@ defmodule Card.Worker do
     IO.puts("Worker #{name} restarted.")
 
     # find this worker's state in ets table
-    restored_deck =
-      case :ets.lookup(@store, name) do
-        [{^name, v}] -> v
-        _ -> 0
+    deck =
+      case :ets.lookup(Card.store, name) do
+        [{^name, saved_deck}] -> saved_deck
+        [] -> generate_deck()
       end
 
-      this_deck =
-        case restored_deck do
-          nil -> generate_deck()
-          deck -> deck
-        end
-
-      {:ok, {name, this_deck}}
+      {:ok, {name, deck}}
   end
 
   @impl true
-  def handle_call(request, _from, {_, deck} = _state) do
+  def handle_call(request, _from, {name, deck} = _state) do
 
     case request do
       :count -> result = length(deck)
@@ -97,8 +83,9 @@ defmodule Card.Worker do
   end
 
   @impl true
-  def terminate(_reason, state) do
-    :ets.insert(@store, state)
+  def terminate(_reason, {name, deck}) do
+    :ets.insert(Card.Store, {name, deck})
+    :ok
   end
 
 end

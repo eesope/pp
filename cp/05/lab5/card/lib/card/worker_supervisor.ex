@@ -2,6 +2,7 @@ defmodule Card.WorkerSupervisor do
   use DynamicSupervisor
 
   def start_link(_) do
+    IO.puts("Linking new worker...")
     DynamicSupervisor.start_link(__MODULE__, nil, name: __MODULE__)
   end
 
@@ -10,6 +11,7 @@ defmodule Card.WorkerSupervisor do
   end
 
   def init(_arg) do
-    DynamicSupervisor.init(strategy: :one_for_one, max_children: 5)
+    # dynamic doesn't need max_children
+    DynamicSupervisor.init(strategy: :one_for_one)
   end
 end
