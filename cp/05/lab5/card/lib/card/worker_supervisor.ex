@@ -2,7 +2,7 @@ defmodule Card.WorkerSupervisor do
   use DynamicSupervisor
 
   def start_link(_) do
-    IO.puts("Linking new worker...")
+    IO.puts("Please start a worker with a name...")
     DynamicSupervisor.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 

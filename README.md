@@ -1,0 +1,1 @@
+small piece of versatile code blocks in FP, and a world of class and responsibility in oop
