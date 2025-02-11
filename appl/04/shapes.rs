@@ -1,3 +1,4 @@
+// trait is similar with interface
 trait Shape {
     fn area(&self) -> f32;
 }
@@ -18,6 +19,7 @@ impl Shape for Square {
     }
 }
 
+// &Vec -> borrowing
 fn total_area(v: &Vec<Box<dyn Shape>>) -> f32 {
     let mut total = 0.0;
 

@@ -15,14 +15,19 @@ impl<K, V> Alist<K, V> {
     }
 
     fn into_iter(self) -> std::vec::IntoIter<(K, V)> {
+        // returns 소유권을 이동하는 (consume) iterator^
         self.0.into_iter()
     }
 
     fn iter(&self) -> std::slice::Iter<(K, V)> {
-        self.0.iter()
+        // 불변 참조 (&self)에 대한 슬라이스 이터 반환
+        // 읽기 전용으로 순회함
+        self.0.iter(함
     }
 
     fn iter_mut(&mut self) -> std::slice::IterMut<(K, V)> {
+        // 가변 참조(&mut self능
+        // 이터레이터는 데이터를 읽고 수정 가능
         self.0.iter_mut()
     }
 }
@@ -73,7 +78,7 @@ fn main() {
     l.add(1, "hello");
     l.add(2, "world");
 
-    // following commented line moves l
+    // following commented line moves l (소유권 소비)
     // l.into_iter().for_each(|(k, v)| { println!("{}: {}", k, v); });
     
     l.iter().for_each(|(k, v)| { println!("{}: {}", k, v); });

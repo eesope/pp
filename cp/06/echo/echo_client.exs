@@ -19,7 +19,7 @@ defmodule EchoClient do
 end
 
 with [host, port | _] <- System.argv(),
-     {port, ""} <- Integer.parse(port)
+      {port, ""} <- Integer.parse(port)
 do
   EchoClient.connect(String.to_atom(host), port)
 else
