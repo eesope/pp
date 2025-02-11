@@ -13,9 +13,7 @@ defmodule Card.Worker do
 
   def count(name), do: GenServer.call(via(name), :count)
 
-  def deal(name, n \\ 1)
-  def deal(name, n ) when is_integer(n), do: GenServer.call(via(name), {:deal, n})
-  def deal(_name, _n), do: raise(ArgumentError, "You must at least deal 1 card.")
+  def deal(name, n \\ 1), do: GenServer.call(via(name), {:deal, n})
 
   # private helper function
   defp via(name), do: {:via, Registry, {Card.Registry, {__MODULE__, name}}}
@@ -33,6 +31,7 @@ defmodule Card.Worker do
   # callbacks
   @impl true
   def init(name) do
+    Process.flag(:trap_exit, true)
     IO.puts("Worker #{name} (re)started.")
 
     # find this worker's state in ets table
@@ -52,7 +51,10 @@ defmodule Card.Worker do
       :count -> result = length(deck)
         {:reply, result, state}
 
-      {:deal, n} when n == 0 ->
+      {:deal, n} when not is_number(n) ->
+        raise ArgumentError, "Invalid argument for deal: n must be an positive number."
+
+      {:deal, n} when n <= 0 ->
         {:reply, {:error, "You must deal at least 1 card."}, state}
 
       {:deal, n} when n > length(deck) ->
@@ -74,7 +76,6 @@ defmodule Card.Worker do
         :shuffle ->
           Enum.shuffle(deck)
       end
-
     {:noreply, {name, result_deck}}
   end
 
