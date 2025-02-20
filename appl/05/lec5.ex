@@ -43,7 +43,7 @@ defmodule Lec5 do
         for _ <- Stream.cycle([:ok]) do
           if unquote(predicate), do: unquote(block), else: throw :break
         end
-      catch :throw, :break -> 
+      catch :throw, :break ->
         :ok
       end
     end
@@ -74,7 +74,7 @@ defmodule Lec5 do
     quote do
       def unquote(name)(), do: IO.puts(unquote(msg))
     end
-  end 
+  end
 
   defmacro make_fn(name, do: block) do
     name = String.to_atom(name)
