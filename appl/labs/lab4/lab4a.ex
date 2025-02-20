@@ -1,7 +1,6 @@
 defmodule Lab4a.Macros do
 
-  defmacro __before_compile__(env) do
-    #env to use quoted value
+  defmacro __before_compile__(env) do #env to use quoted value
     lines = Module.get_attribute(env.module, :lines) || []
 
     # take key and value to make function dynamically
@@ -11,6 +10,7 @@ defmodule Lab4a.Macros do
       end
     end
   end
+
 end
 
 defmodule Lab4a do
@@ -26,4 +26,5 @@ defmodule Lab4a do
     end)
   |> Enum.to_list()
   # @lines => AST
+
 end

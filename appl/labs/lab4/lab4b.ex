@@ -17,3 +17,10 @@ defmodule Lab4b do
   # atomic _weight ("abc") returns -1
   def atomic_weight(_), do: -1
 end
+
+
+# lab4 feedback
+# OK, although the extra modules are not really necessary
+# not understanding well;
+# implement 2 independent modules Lab4a and Lab4b
+# i.e., neither module is allowed to call functions from the other module) containing functions that are generated using the techniques of metaprogamming
