@@ -13,3 +13,4 @@ defmodule Counter.WorkerSupervisor do
     DynamicSupervisor.init(strategy: :one_for_one, max_children: 100)
   end
 end
+

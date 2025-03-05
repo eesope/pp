@@ -1,8 +1,4 @@
 defmodule Counter.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
-  @moduledoc false
-
   use Application
 
   @impl true
@@ -12,9 +8,6 @@ defmodule Counter.Application do
       # {Counter.Worker, arg}
       Counter.WorkerSupervisor
     ]
-
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
     :ets.new(Counter.Store, [:named_table, :public])
     opts = [strategy: :one_for_one, name: Counter.Supervisor]
     Supervisor.start_link(children, opts)
